@@ -39,25 +39,25 @@ struct Task: Identifiable, Codable {
 
         switch duration {
         case .short:
-            if daysSinceCreation >= 2 {
+            if daysSinceCreation >= Constants.UrgencyThresholds.Short.red {
                 return .red
-            } else if daysSinceCreation >= 1 {
+            } else if daysSinceCreation >= Constants.UrgencyThresholds.Short.yellow {
                 return .yellow
             }
         case .medium:
-            if daysSinceCreation >= 4 {
+            if daysSinceCreation >= Constants.UrgencyThresholds.Medium.red {
                 return .red
-            } else if daysSinceCreation >= 3 {
+            } else if daysSinceCreation >= Constants.UrgencyThresholds.Medium.orange {
                 return .orange
-            } else if daysSinceCreation >= 2 {
+            } else if daysSinceCreation >= Constants.UrgencyThresholds.Medium.yellow {
                 return .yellow
             }
         case .long:
-            if daysSinceCreation >= 6 {
+            if daysSinceCreation >= Constants.UrgencyThresholds.Long.red {
                 return .red
-            } else if daysSinceCreation >= 5 {
+            } else if daysSinceCreation >= Constants.UrgencyThresholds.Long.orange {
                 return .orange
-            } else if daysSinceCreation >= 4 {
+            } else if daysSinceCreation >= Constants.UrgencyThresholds.Long.yellow {
                 return .yellow
             }
         }
@@ -108,12 +108,12 @@ class TaskStore: ObservableObject {
 
     private func save() {
         if let encoded = try? JSONEncoder().encode(tasks) {
-            UserDefaults.standard.set(encoded, forKey: "tasks")
+            UserDefaults.standard.set(encoded, forKey: Constants.UserDefaultsKeys.tasks)
         }
     }
 
     private func load() {
-        if let data = UserDefaults.standard.data(forKey: "tasks"),
+        if let data = UserDefaults.standard.data(forKey: Constants.UserDefaultsKeys.tasks),
             let decoded = try? JSONDecoder().decode([Task].self, from: data)
         {
             tasks = decoded
