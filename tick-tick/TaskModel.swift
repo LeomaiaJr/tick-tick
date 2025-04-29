@@ -98,6 +98,14 @@ class TaskStore: ObservableObject {
         }
     }
 
+    func updateTask(id: UUID, title: String, description: String, duration: TaskDuration) {
+        if let index = tasks.firstIndex(where: { $0.id == id }) {
+            tasks[index].title = title
+            tasks[index].description = description
+            tasks[index].duration = duration
+        }
+    }
+
     private func save() {
         if let encoded = try? JSONEncoder().encode(tasks) {
             UserDefaults.standard.set(encoded, forKey: "tasks")
